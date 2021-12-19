@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 django-admin = "*"
+python-dateutil = "*"
+humanize = "*"
 
 [dev-packages]
 
