@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="92ab9c7c-4d60-4569-b57f-a7b668505871" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gosasa_tracker/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/gosasa_tracker/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +55,8 @@
       <workItem from="1639936099904" duration="6455000" />
       <workItem from="1639945108571" duration="387000" />
       <workItem from="1639945551983" duration="17000" />
-      <workItem from="1639945603778" duration="637000" />
+      <workItem from="1639945603778" duration="1059000" />
+      <workItem from="1640022376437" duration="693000" />
     </task>
     <servers />
   </component>
