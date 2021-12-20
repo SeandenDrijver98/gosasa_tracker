@@ -1,0 +1,1 @@
+web: gunicorn gosasa_tracker.wsgi
