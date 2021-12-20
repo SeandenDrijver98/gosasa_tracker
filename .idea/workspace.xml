@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92ab9c7c-4d60-4569-b57f-a7b668505871" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Sales/templates/gosasa_tracker/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gosasa_tracker/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/gosasa_tracker/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gosasa_tracker/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/gosasa_tracker/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +55,7 @@
       <workItem from="1639945108571" duration="387000" />
       <workItem from="1639945551983" duration="17000" />
       <workItem from="1639945603778" duration="1059000" />
-      <workItem from="1640022376437" duration="3207000" />
+      <workItem from="1640022376437" duration="3494000" />
     </task>
     <servers />
   </component>
