@@ -9,6 +9,7 @@ django-admin = "*"
 python-dateutil = "*"
 humanize = "*"
 psycopg2-binary = "*"
+gunicorn = "*"
 
 [dev-packages]
 
