@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django.contrib.humanize",
-    'Sales'
+    'Sales',
+    'Market',
+    'gosasa_scraper'
 ]
 
 MIDDLEWARE = [
