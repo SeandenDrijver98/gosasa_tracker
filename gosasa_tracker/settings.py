@@ -162,3 +162,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour=14, minute=30),
     },
 }
+
+# MAIL
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+FROM_MAIL = "gosasa.tracking@gmail.com"
+FROM_NAME = "Gosasa Tracking"
+SENDGRID_TEMPLATES = {
+    "daily_prices": "d-89e7b43312fd473b9dfc01d4fe3a6857",
+    }
