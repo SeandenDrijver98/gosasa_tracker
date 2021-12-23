@@ -67,6 +67,7 @@ xlwt = "==1.3.0"
 Django = "==4.0"
 pyOpenSSL = "==21.0.0"
 sendgrid = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

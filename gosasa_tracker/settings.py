@@ -14,7 +14,10 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from celery.schedules import crontab
-# BASE_DIR = Path(__file__).resolve().parent.parent
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -159,7 +162,11 @@ CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERY_BEAT_SCHEDULE = {
     "scrape_market_products": {
         "task": "Market.tasks.scrape_market_products",
-        'schedule': crontab(hour=18, minute=30),
+        'schedule': crontab(hour=14, minute=10),
+    },
+    "send_daily_prices_mail": {
+        "task": "Market.tasks.send_daily_prices_mail",
+        'schedule': crontab(hour=14, minute=15),
     },
 }
 
@@ -168,5 +175,5 @@ SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 FROM_MAIL = "gosasa.tracking@gmail.com"
 FROM_NAME = "Gosasa Tracking"
 SENDGRID_TEMPLATES = {
-    "daily_prices": "d-89e7b43312fd473b9dfc01d4fe3a6857",
+    "daily_prices": "d-9b3fec25c9cf4de8b19c01306a38073f",
     }
