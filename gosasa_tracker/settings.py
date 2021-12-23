@@ -166,7 +166,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     "send_daily_prices_mail": {
         "task": "Market.tasks.send_daily_prices_mail",
-        'schedule': crontab(hour=14, minute=15),
+        'schedule': crontab(hour=14, minute=15, day_of_week='1-5'),
     },
 }
 
