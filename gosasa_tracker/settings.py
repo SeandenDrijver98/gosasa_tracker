@@ -150,8 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # CELERY STUFF
-BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379")
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+BROKER_URL = os.getenv("BROKER_URL", "redis://localhost:6379")
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND','redis://localhost:6379')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -159,7 +159,7 @@ CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERY_BEAT_SCHEDULE = {
     "scrape_market_products": {
         "task": "Market.tasks.scrape_market_products",
-        'schedule': crontab(hour=14, minute=30),
+        'schedule': crontab(hour=18, minute=30),
     },
 }
 
