@@ -1,12 +1,13 @@
 from django.db import models
 
-# Create your models here.
+
 class TrackedProduct(models.Model):
     title = models.CharField(max_length=255)
     start_url = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
+
 
 class DailyPrice(models.Model):
     product = models.ForeignKey(TrackedProduct, on_delete=models.SET_NULL, null=True)
