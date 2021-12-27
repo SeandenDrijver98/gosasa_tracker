@@ -161,8 +161,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERYBEAT_SCHEDULE = {
-    "scrape_market_products": {
-        "task": "Market.tasks.scrape_market_products",
+    "crawl_market_products": {
+        "task": "Market.tasks.crawl_market_products",
         'schedule': crontab(hour=14, minute=5),
     },
     "send_daily_prices_mail": {
