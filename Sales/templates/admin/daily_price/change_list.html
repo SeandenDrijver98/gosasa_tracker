@@ -1,0 +1,72 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% load humanize %}
+
+
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = {
+                datasets:
+                    [
+                        {% for product in  chart_data %}
+                            {
+                                label: "{{ product.0 }}",
+                                data:  {{ product.1 | safe }},
+                                backgroundColor: "{{ product.2 }}",
+                            },
+                        {% endfor %}
+                    ]
+            }
+
+            const ctx = document.getElementById('daily_prices').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    layout: {
+                        padding: {
+                            bottom: 30
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            text: 'Daily Prices for the month',
+                            display: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Daily Price'
+                            }
+                        }
+                    },
+                },
+            });
+        })
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Render our chart -->
+    <canvas id="daily_prices" width="700" height="400"></canvas>
+
+    <!-- Render the rest of the ChangeList view -->
+    {{ block.super }}
+{% endblock %}
