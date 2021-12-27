@@ -163,11 +163,11 @@ CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERYBEAT_SCHEDULE = {
     "scrape_market_products": {
         "task": "Market.tasks.scrape_market_products",
-        'schedule': crontab(hour=9, minute=50),
+        'schedule': crontab(hour=14, minute=5),
     },
     "send_daily_prices_mail": {
         "task": "Market.tasks.send_daily_prices_mail",
-        'schedule': crontab(hour=9, minute=55, day_of_week='1-5'),
+        'schedule': crontab(hour=14, minute=10, day_of_week='1-5'),
     },
 }
 
