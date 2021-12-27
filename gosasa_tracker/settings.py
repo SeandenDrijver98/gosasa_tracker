@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     'Sales',
     'Market',
-    'gosasa_scraper'
+    'gosasa_scraper',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -57,8 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django_celery_beat'
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'gosasa_tracker.urls'
@@ -163,11 +163,11 @@ CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERY_BEAT_SCHEDULE = {
     "scrape_market_products": {
         "task": "Market.tasks.scrape_market_products",
-        'schedule': crontab(hour=9, minute=5),
+        'schedule': crontab(hour=9, minute=20),
     },
     "send_daily_prices_mail": {
         "task": "Market.tasks.send_daily_prices_mail",
-        'schedule': crontab(hour=9, minute=7, day_of_week='1-5'),
+        'schedule': crontab(hour=9, minute=21, day_of_week='1-5'),
     },
 }
 
