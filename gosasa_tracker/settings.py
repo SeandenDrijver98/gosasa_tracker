@@ -58,6 +58,7 @@ MIDDLEWARE = [
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django_celery_beat'
 ]
 
 ROOT_URLCONF = 'gosasa_tracker.urls'
@@ -162,11 +163,11 @@ CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERY_BEAT_SCHEDULE = {
     "scrape_market_products": {
         "task": "Market.tasks.scrape_market_products",
-        'schedule': crontab(hour=14, minute=10),
+        'schedule': crontab(hour=8, minute=50),
     },
     "send_daily_prices_mail": {
         "task": "Market.tasks.send_daily_prices_mail",
-        'schedule': crontab(hour=14, minute=15, day_of_week='1-5'),
+        'schedule': crontab(hour=8, minute=52, day_of_week='1-5'),
     },
 }
 
