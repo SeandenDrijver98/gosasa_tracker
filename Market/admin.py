@@ -52,6 +52,7 @@ class DailyPriceAdmin(admin.ModelAdmin):
 
     def changelist_view(self, request, extra_context=None):
         extra_context = []
+        # https://www.color-hex.com/
         colours = ["#4f48e2", "#e24848", "#fbb117", "#ffa97e", "#007474", "#c5d165", "#aaaacc", "#99cccc", "#aa40ff"]
         for i, product in enumerate(TrackedProduct.objects.all()):
           extra_context.append((
