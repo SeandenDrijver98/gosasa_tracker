@@ -25,7 +25,7 @@ def send_daily_prices_mail():
     message.dynamic_template_data = {
         "date": today.strftime("%d %B %Y"),
         "tracked_products": [
-            {"product": product.product, "price": product.price} for product in daily_prices_for_products
+            {"product": str(product.product), "price": product.price} for product in daily_prices_for_products
         ]
     }
 
