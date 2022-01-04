@@ -6,8 +6,8 @@ class Command(BaseCommand):
     help = 'Send Daily Tracked Product Prices'
 
     def handle(self, *args, **options):
-        weekday = datetime.weekday()
+        weekday = datetime.weekday(datetime.now())
         if weekday > 4:
             return
-        
+
         send_daily_prices_mail()
