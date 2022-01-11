@@ -68,6 +68,7 @@ Django = "==3.2.10"
 pyOpenSSL = "==21.0.0"
 sendgrid = "*"
 python-dotenv = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
