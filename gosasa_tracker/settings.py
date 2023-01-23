@@ -144,16 +144,16 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Johannesburg'
-# CELERYBEAT_SCHEDULE = {
-#     "crawl_market_products": {
-#         "task": "Market.tasks.crawl_market_products",
-#         'schedule': crontab(hour=14, minute=5),
-#     },
-#     "send_daily_prices_mail": {
-#         "task": "Market.tasks.send_daily_prices_mail",
-#         'schedule': crontab(hour=14, minute=10, day_of_week='1-5'),
-#     },
-# }
+CELERYBEAT_SCHEDULE = {
+    "crawl_market_products": {
+        "task": "Market.tasks.crawl_market_products",
+        'schedule': crontab(hour=14, minute=45),
+    },
+    "send_daily_prices_mail": {
+        "task": "Market.tasks.send_daily_prices_mail",
+        'schedule': crontab(hour=15, minute=00, day_of_week='1-5'),
+    },
+}
 
 # MAIL
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
