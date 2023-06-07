@@ -7,6 +7,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -14,8 +17,5 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          pip install pipenv
           pipenv install
-
-      - name: Pull Latest Master File
-        run: |
-          # Write the necessary commands to pull the latest master file to the deploy key server
