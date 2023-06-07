@@ -14,8 +14,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install --upgrade pip
-          pip install some_dependency
+          pipenv install
 
       - name: Pull Latest Master File
         run: |
