@@ -2,27 +2,110 @@ from scrapy.spiders import CrawlSpider
 
 from Market.models import TrackedProduct, DailyPrice
 
-class ProductSpider(CrawlSpider):
+import scrapy
+from scrapy_selenium import SeleniumRequest
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+import time
+
+
+class ProductSpider(scrapy.Spider):
     name = 'product_spider'
     allowed_domains = ['joburgmarket.co.za']
-    tracked_products = TrackedProduct.objects.all()
     start_urls = [
-        product.start_url for product in tracked_products
+        "https://www.joburgmarket.co.za/jhbmarket/daily-price-list/"
     ]
 
-    def _parse_response(self, response, callback, cb_kwargs, follow=True):
-        try:
-            tracked_product = TrackedProduct.objects.get(start_url=response.url)
-        except TrackedProduct.DoesNotExists():
-            pass
+    def start_requests(self):
+        # Use SeleniumRequest instead of scrapy.Request to enable Selenium
+        yield SeleniumRequest(url=self.start_urls[0], callback=self.parse)
 
-        price = response.css('.alltable > tbody > tr > td:nth-of-type(5)::text').get()[1:]
-        print(f"Price found is R{price} for {str(tracked_product)}")
-        DailyPrice.objects.create(product=tracked_product, price=price)
+    def parse(self, response):
+        # Extract items (values from <option> elements)
+        options = response.css('select[name="commodity"] option::attr(value)').getall()
+        # Remove the empty option
+        options = [option for option in options if option]
 
-        # property_loader = ItemLoader(item=ScraperItem(), response=response)
-        # property_loader.default_output_processor = TakeFirst()
-        #
-        # property_loader.add_css(
-        #     "code", "span#ContentPlaceHolder1_DetailsFormView_CodeLabel::text"
-        # )
+        # Iterate over each item and interact with the dropdown
+        for item in options:
+            yield SeleniumRequest(
+                url=self.start_urls[0],
+                callback=self.handle_dropdown,
+                meta={'item': item}
+            )
+
+    def handle_dropdown(self, response):
+        item_value = response.meta['item']
+
+        # Get the WebDriver instance from the response
+        driver = response.meta['driver']
+        wait = WebDriverWait(driver, 10)  # 10 seconds timeout
+
+        # Wait for the dropdown to be present
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'select[name="commodity"]')))
+
+        # Locate the dropdown and select the option by value
+        select_element = driver.find_element(By.CSS_SELECTOR, 'select[name="commodity"]')
+        select = Select(select_element)
+        select.select_by_value(item_value)
+
+        # Optionally wait for form submission and page update
+        time.sleep(1)  # Adjust the sleep time if needed for your page's response time
+
+        # Verify the selected option
+        selected_option = select.first_selected_option.get_attribute('value')
+        assert selected_option == item_value, f"Expected '{item_value}', but got '{selected_option}'"
+
+        # Wait until the 'containers' div is loaded
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.containers')))
+
+        # Extract all <a> tags within the 'containers' div
+        links = driver.find_elements(By.CSS_SELECTOR, 'div.containers a')
+
+        # Iterate over each <a> tag and follow the link
+        for link in links:
+            name = link.text
+            url = link.get_attribute('href')
+            yield SeleniumRequest(
+                url=url,
+                callback=self.handle_container_stats,
+                meta={'item': item_value, 'container_name': name}
+            )
+
+    def handle_container_stats(self,response):
+        item_value = response.meta['item']
+        container_value = response.meta['container_name']
+        # Get the WebDriver instance from the response
+        driver = response.meta['driver']
+        wait = WebDriverWait(driver, 10)  # 10 seconds timeout
+
+        # Wait until the elements are present
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.statistics')))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.Container')))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.myform select[name="commodity"]')))
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'table.alltable')))
+
+        # Extract the statistics
+        statistics = driver.find_element(By.CSS_SELECTOR, 'div.statistics').text
+        expected_statistics = f"Statistics for {item_value}"
+        assert statistics == expected_statistics, f"Expected '{expected_statistics}', but got '{statistics}'"
+
+        # Extract the container
+        container = driver.find_element(By.CSS_SELECTOR, 'div.Container').text
+        expected_container = f"Container: {container_value}"
+        assert container == expected_container, f"Expected '{expected_container}', but got '{container}'"
+
+        # Extract the selected commodity
+        commodity_select = driver.find_element(By.CSS_SELECTOR, 'div.myform select[name="commodity"]')
+        selected_commodity = commodity_select.find_element(By.CSS_SELECTOR, 'option[selected]').text
+        expected_commodity = item_value
+        assert selected_commodity == expected_commodity, f"Expected '{expected_commodity}', but got '{selected_commodity}'"
+
+        # Extract the average price
+        average_price = driver.find_element(By.CSS_SELECTOR, 'table.alltable tbody tr td:nth-child(5)').text
+
+        tracked_product, created = TrackedProduct.objects.get_or_create(commodity=item_value, container=container_value)
+
+        DailyPrice.objects.create(product=tracked_product, price=average_price)

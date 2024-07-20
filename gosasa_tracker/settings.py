@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'gosasa_tracker.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
+DATABASES = {"default": dj_database_url.config(conn_max_age=600, engine="django.db.backends.postgresql")}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -162,3 +162,10 @@ FROM_NAME = "Gosasa Tracking"
 SENDGRID_TEMPLATES = {
     "daily_prices": "d-9b3fec25c9cf4de8b19c01306a38073f",
     }
+
+# SELENIUM CONFIG
+# settings.py
+SELENIUM_DRIVER_NAME = 'chrome'
+SELENIUM_DRIVER_EXECUTABLE_PATH = '/usr/local/bin/chromedriver'  # Path to ChromeDriver
+SELENIUM_BROWSER_EXECUTABLE_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'  # Path to Chrome executable
+SELENIUM_WAIT = 10
