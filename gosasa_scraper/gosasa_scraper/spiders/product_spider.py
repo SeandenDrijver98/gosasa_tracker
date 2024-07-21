@@ -1,4 +1,7 @@
-from scrapy.spiders import CrawlSpider
+import logging
+
+from scrapy.http import HtmlResponse
+from selenium import webdriver
 
 from Market.models import TrackedProduct, DailyPrice
 
@@ -10,6 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import time
 
+scrapy_logger = logging.getLogger('scrapy')
 
 class ProductSpider(scrapy.Spider):
     name = 'product_spider'
@@ -20,13 +24,27 @@ class ProductSpider(scrapy.Spider):
 
     def start_requests(self):
         # Use SeleniumRequest instead of scrapy.Request to enable Selenium
-        yield SeleniumRequest(url=self.start_urls[0], callback=self.parse)
+        scrapy_logger.info("Starting the spider")
+        yield SeleniumRequest(
+            url=self.start_urls[0],
+            callback=self.parse,
+            wait_time=50,  # Time to wait for JavaScript to load
+            wait_until=EC.presence_of_element_located((By.CSS_SELECTOR, 'select[name="commodity"]'))
+        )
+
 
     def parse(self, response):
         # Extract items (values from <option> elements)
+        if '<select' in response.text:
+            print("Select element found in the response")
+        else:
+            print("Select element not found in the response")
+
         options = response.css('select[name="commodity"] option::attr(value)').getall()
+        print(options)
         # Remove the empty option
         options = [option for option in options if option]
+        scrapy_logger.info(f"Found {len(options)} items")
 
         # Iterate over each item and interact with the dropdown
         for item in options:
@@ -63,6 +81,7 @@ class ProductSpider(scrapy.Spider):
 
         # Extract all <a> tags within the 'containers' div
         links = driver.find_elements(By.CSS_SELECTOR, 'div.containers a')
+        scrapy_logger.info(f"Found {len(links)} containers for {item_value}")
 
         # Iterate over each <a> tag and follow the link
         for link in links:
@@ -106,6 +125,7 @@ class ProductSpider(scrapy.Spider):
         # Extract the average price
         average_price = driver.find_element(By.CSS_SELECTOR, 'table.alltable tbody tr td:nth-child(5)').text
 
+        scrapy_logger.info(f"Statistics for {item_value} - Container: {container_value} - Price: {average_price}")
         tracked_product, created = TrackedProduct.objects.get_or_create(commodity=item_value, container=container_value)
 
         DailyPrice.objects.create(product=tracked_product, price=average_price)

@@ -166,6 +166,45 @@ SENDGRID_TEMPLATES = {
 # SELENIUM CONFIG
 # settings.py
 SELENIUM_DRIVER_NAME = 'chrome'
+SELENIUM_DRIVER_ARGUMENTS = [
+    '--headless',
+    '--disable-javascript=false',
+    '--enable-cookies',
+    '--disable-gpu',
+    '--disable-notifications',
+    '--disable-web-security',
+    '--incognito',
+]
 SELENIUM_DRIVER_EXECUTABLE_PATH = '/usr/local/bin/chromedriver'  # Path to ChromeDriver
 SELENIUM_BROWSER_EXECUTABLE_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'  # Path to Chrome executable
 SELENIUM_WAIT = 10
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'scrapy.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'loggers': {
+        'scrapy': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
